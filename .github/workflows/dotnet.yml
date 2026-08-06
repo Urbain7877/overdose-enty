@@ -1,13 +1,16 @@
+
 name: Build Mod
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -15,14 +18,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: 6.0.x
 
-    - name: Build
-      run: dotnet build LethalCompanyTemplate/LethalCompanyTemplate.csproj -c Release
+    - name: Build Project
+      run: dotnet build -c Release
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: MyLethalMod
-        path: LethalCompanyTemplate/bin/Release/netstandard2.1/*.dll
-        
+        path: "**/bin/Release/netstandard2.1/*.dll"
