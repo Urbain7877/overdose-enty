@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -25,3 +25,4 @@ jobs:
       with:
         name: MyLethalMod
         path: LethalCompanyTemplate/bin/Release/netstandard2.1/*.dll
+        
