@@ -1,17 +1,12 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
+name: Build Mod
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,27 +15,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ vars.DOTNET_VERSION }}
-
-    - name: Restore dependencies
-      run: dotnet restore
+        dotnet-version: '6.0.x'
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build LethalCompanyTemplate/LethalCompanyTemplate.csproj -c Release
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-
-    - name: Create distribution
-      run: |
-        mkdir -p dist/
-        cp \
-          ${{ vars.MOD_NAME }}/bin/Debug/netstandard*/*.dll \
-          dist/
-
-    - name: Upload
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ vars.MOD_NAME }}
-        path: dist/*
-        retention-days: 14
+        name: MyLethalMod
+        path: LethalCompanyTemplate/bin/Release/netstandard2.1/*.dll
